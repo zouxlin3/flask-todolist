@@ -131,16 +131,22 @@ def logout():
     return redirect(url_for('index'))
 
 
-@app.route('/signup')  # todo 继续
+@app.route('/signup', methods=['GET', 'POST'])  # 注册新用户
 def signup():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
 
-        user = User.query.filter(User.name == username)
-        if user.validate_password(password):  # 验证
-            login_user(user)
-            return redirect(url_for('index'))
+        if User.query.filter(User.name == username) is not None:
+            flash('该用户名已被注册。')
+            redirect(url_for('signup'))
+
+        user = User(name=username)
+        user.set_password(password)
+        db.session.add(user)
+        db.session.commit()
+        flash('成功注册新用户。')
+        redirect(url_for('index'))
 
     return render_template('signup.html')
 
@@ -152,7 +158,7 @@ def settings():
         name = request.form['name']
         current_user.name = name
         password = request.form['password']
-        current_user.password_hash = current_user.set_password(password)
+        current_user.set_password(password)
         db.session.commit()
         return redirect(url_for('index'))
 
@@ -166,66 +172,12 @@ def page_not_found(e):
 
 @app.cli.command()  # 注册为命令
 @click.option('--drop', is_flag=True, help='Create after drop.')  # 设置选项
-def initdb(drop):
-    """Initialize the database."""
+def initdb(drop):  # 初始化数据库
     if drop:  # 判断是否输入了选项
         db.drop_all()
     db.create_all()
     click.echo('Initialized database.')  # 输出提示信息
 
-'''
-@app.cli.command()
-@click.option('--username', prompt=True, help='The username used to login.')
-@click.option('--password', prompt=True, hide_input=False, confirmation_prompt=True, help='The password used to login.')
-def admin(username, password):
-    """Create user."""
-    db.create_all()
-
-    user = User.query.first()
-    if user is not None:
-        click.echo('Updating user...')
-        user.name = username
-        user.set_password(password)  # 设置密码
-    else:
-        click.echo('Creating user...')
-        user = User(name=username)
-        user.set_password(password)  # 设置密码
-        db.session.add(user)
-
-    db.session.commit()  # 提交数据库会话
-    click.echo('Done.')
-'''
-'''
-# 虚拟数据
-@app.cli.command()
-def forge():
-    """Generate fake data."""
-    db.create_all()
-
-    # 全局的两个变量移动到这个函数内
-    name = 'zouxlin'
-    movies = [
-        {'title': 'My Neighbor Totoro', 'year': '1988'},
-        {'title': 'Dead Poets Society', 'year': '1989'},
-        {'title': 'A Perfect World', 'year': '1993'},
-        {'title': 'Leon', 'year': '1994'},
-        {'title': 'Mahjong', 'year': '1996'},
-        {'title': 'Swallowtail Butterfly', 'year': '1996'},
-        {'title': 'King of Comedy', 'year': '1999'},
-        {'title': 'Devils on the Doorstep', 'year': '1999'},
-        {'title': 'WALL-E', 'year': '2008'},
-        {'title': 'The Pork of Music', 'year': '2012'},
-    ]
-
-    user = User(name=name)
-    db.session.add(user)
-    for m in movies:
-        movie = Task(title=m['title'], year=m['year'])
-        db.session.add(movie)
-
-    db.session.commit()
-    click.echo('Done.')
-'''
 
 if __name__ == '__main__':
     app.run()
