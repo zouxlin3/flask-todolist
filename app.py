@@ -62,12 +62,12 @@ class Task(db.Model):
     content = db.Column(db.String(60))
     is_completed = db.Column(db.Boolean)
 
-
+'''
 @app.context_processor  # todo  上下文处理器  使所有自定义变量在模板中可见
 def inject_user():
     user = User.query.get(current_user.id)
     return dict(user=user)
-
+'''
 
 @app.route('/', methods=['GET', 'POST'])  # 主页面
 def index():
@@ -131,15 +131,15 @@ def logout():
     return redirect(url_for('index'))
 
 
-@app.route('/signup', methods=['GET', 'POST'])  # 注册新用户
-def signup():
+@app.route('/register', methods=['GET', 'POST'])  # 注册新用户
+def register():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
 
         if User.query.filter(User.name == username) is not None:
             flash('该用户名已被注册。')
-            redirect(url_for('signup'))
+            redirect(url_for('register'))
 
         user = User(name=username)
         user.set_password(password)
@@ -148,7 +148,7 @@ def signup():
         flash('成功注册新用户。')
         redirect(url_for('index'))
 
-    return render_template('signup.html')
+    return render_template('register.html')
 
 
 @app.route('/settings', methods=['GET', 'POST'])  # 修改用户信息

@@ -1,29 +1,58 @@
 {% extends 'base.html' %}
 
 {% block title %}
-<title>Login</title>
+<title>登录-todo.NUTURE</title>
 <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}" type="text/css">
 {% endblock %}
 
-{% block content %}
-<div id="content">
-    <div class="login-header">
-        <img src="{{ url_for('static', filename='images/avatar.png') }}">
+{% block body %}
+<section class="h-100">
+    <div class="container h-100">
+        <div class="row justify-content-md-center h-100">
+            <div class="card-wrapper">
+                <div class="brand"><!--logo-->
+                    <img src="static/images/logo.jpg" alt="logo">
+                </div>
+                <div class="card fat">
+                    <div class="card-body">
+                        <h4 class="card-title">登录</h4>
+                        <form method="POST" class="my-login-validation" novalidate="">
+                            <div class="form-group">
+                                <label for="username">用户名</label>
+                                <!--class:对应的css name:输入内容的name autofocus:加载页面时自动开启输入光标-->
+                                <input id="username" type="text" class="form-control" name="username" value="" required autofocus>
+                                {% for message in get_flashed_messages() %}
+                                    <div class="invalid-feedback">{{ message }}</div>
+                                {% endfor %}
+                                <!--<div class="invalid-feedback">todo
+                                    Email is invalid
+                                </div>-->
+                            </div>
+                            <div class="form-group">
+                                <label for="password">密码</label><!--data-eye是自定义属性-->
+                                <input id="password" type="password" class="form-control" name="password" required data-eye>
+                                <div class="invalid-feedback"><!--todo-->
+                                    Password is required
+                                </div>
+                            </div>
+
+                            <div class="form-group m-0">
+                                <button type="submit" class="btn btn-primary btn-block">
+                                    登录
+                                </button>
+                            </div>
+                            <div class="mt-4 text-center">
+                                还没有账户? <a href="register.html">马上加入</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="footer">
+                    Copyright &copy; 2020 &mdash; todo.NUTURE
+                </div>
+            </div>
+        </div>
     </div>
-    <form method="post">
-        <div class="login-input-box">
-            <input type="text" name="username" autocomplete="off" required placeholder="username">
-        </div>
-        <div class="login-input-box">
-            <input type="password" name="password" autocomplete="off" required placeholder="password">
-        </div>
-        <div class="login-button-box">
-            <input type="submit" name="submit" value="Login">
-        </div>
-    </form>
-    <br>
-    <div class="backhome-btn">
-        <a href="{{ url_for('index') }}"><button>返回首页</button></a>
-    </div>
-</div>
+</section>
+<!--todo-->
 {% endblock %}
