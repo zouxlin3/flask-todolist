@@ -1,0 +1,126 @@
+/* 页面整体 */
+body {
+    margin: auto;
+    max-width: 580px;
+    font-size: 14px;
+    font-family: Helvetica, Arial, sans-serif;
+}
+
+#content{
+    background-color: rgba(255, 255, 255, 0.95);
+    width: 420px;
+    height: 300px;
+    border: 1px solid #000000;
+    border-radius: 6px;
+    padding: 10px;
+    margin-top: 15%;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+}
+
+.login-header{
+    width: 100%;
+    height: 48px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #dcdcdc;
+}
+
+.login-header img{
+    width: 40px;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+}
+
+.login-input-box{
+    margin-top: 12px;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    display: inline-block;
+}
+
+.login-input-box input{
+    width: 340px;
+    height: 32px;
+    margin-left: 18px;
+    border: 1px solid #dcdcdc;
+    border-radius: 4px;
+    padding-left: 42px;
+}
+
+.login-input-box input:hover{
+    border: 1px solid #00b51d;
+}
+
+.login-input-box input:after{
+    border: 1px solid #00b51d;
+}
+
+.login-button-box{
+    margin-top: 12px;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    display: inline-block;
+}
+
+.login-button-box input{
+    background-color: #00b51d;
+    color: #ffffff;
+    font-size: 16px;
+    width: 386px;
+    height: 40px;
+    margin-left: 18px;
+    border: 1px solid #00b51d;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.login-button-box input:hover{
+    background-color: #03a51d;
+}
+
+.login-button-box input:active{
+    background-color: #03a51d;
+}
+
+.backhome-btn button{
+    background-color: white;
+    color: #00b51d;
+    font-size: 16px;
+    width: 386px;
+    height: 40px;
+    margin-left: 18px;
+    border: 1px solid #00b51d;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+/* 页脚 */
+footer {
+    color: #888;
+    margin-top: 15px;
+    text-align: center;
+    padding: 10px;
+}
+
+/* 龙猫图片 */
+.totoro {
+    display: block;
+    margin: 0 auto;
+    height: 100px;
+}
+
+/* flash消息 */
+.alert {
+    position: relative;
+    padding: 7px;
+    margin: 7px 0;
+    border: 1px solid transparent;
+    color: #004085;
+    background-color: #cce5ff;
+    border-color: #b8daff;
+    border-radius: 5px;
+}

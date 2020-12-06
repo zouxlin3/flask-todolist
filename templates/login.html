@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block title %}
+<title>Login</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}" type="text/css">
+{% endblock %}
+
+{% block content %}
+<div id="content">
+    <div class="login-header">
+        <img src="{{ url_for('static', filename='images/avatar.png') }}">
+    </div>
+    <form method="post">
+        <div class="login-input-box">
+            <input type="text" name="username" autocomplete="off" required placeholder="username">
+        </div>
+        <div class="login-input-box">
+            <input type="password" name="password" autocomplete="off" required placeholder="password">
+        </div>
+        <div class="login-button-box">
+            <input type="submit" name="submit" value="Login">
+        </div>
+    </form>
+    <br>
+    <div class="backhome-btn">
+        <a href="{{ url_for('index') }}"><button>返回首页</button></a>
+    </div>
+</div>
+{% endblock %}
