@@ -38,7 +38,7 @@ login_manager = LoginManager(app)
 login_manager.login_view = 'login'
 
 
-@login_manager.user_loader
+@login_manager.user_loader  # 登录验证时LoginManger从数据库加载用户
 def load_user(user_id):
     user = User.query.get(int(user_id))
     return user
@@ -58,128 +58,102 @@ class User(db.Model, UserMixin):
 
 class Task(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    user = db.Column(db.Integer)
     content = db.Column(db.String(60))
-    deadline = db.Column(db.String(8))
+    is_completed = db.Column(db.Boolean)
 
 
-@app.context_processor
+@app.context_processor  # todo  上下文处理器  使所有自定义变量在模板中可见
 def inject_user():
-    user = User.query.first()
+    user = User.query.get(current_user.id)
     return dict(user=user)
 
-'''
-@app.route('/', methods=['GET', 'POST'])
+
+@app.route('/', methods=['GET', 'POST'])  # 主页面
 def index():
+    if not current_user.is_authenticated:  # 判断用户是否登录
+        return redirect(url_for('login'))
+
     if request.method == 'POST':
-        if not current_user.is_authenticated:
-            flash('Please login first.')
-            return redirect(url_for('index'))
-        title = request.form.get('title')
-        year = request.form.get('year')
-        if not title or not year or len(year) > 4 or len(title) > 60:
-            flash('Invalid input.')
-            return redirect(url_for('index'))
-        movie = Task(title=title, year=year)
-        db.session.add(movie)
+        content = request.form.get('content')
+
+        if request.form.get('submit') == '添加任务':  # 增加待办功能
+            task = Task(user=current_user.id, content=content, is_completed=False)
+            db.session.add(task)
+
+        elif request.form.get('submit') == '保存':  # 修改待办功能
+            task = Task.query.get(request.form.get('task_id'))
+            task.content = content
+
         db.session.commit()
-        flash('Created sucessfully!')
         return redirect(url_for('index'))
 
-    movies = Task.query.all()
-    return render_template('index.html', movies=movies)
-'''
+    tasks = Task.query.filter(Task.user == current_user.id)  # 读取用户待办
+    return render_template('index.html', tasks=tasks)  # todo  关联app.context_processor
 
-@app.route('/', methods=['GET', 'POST'])
+
+@login_required
+def delete(task_id):  # 删除待办功能
+    db.session.delete(Task.query.get(task_id))
+    db.session.commit()
+    return url_for('index')
+
+
+@login_required
+def complete(task_id):  # 完成待办功能
+    task = Task.query.get(task_id)
+    task.is_completed = True
+    db.session.commit()
+    return url_for('index')
+
+
+@app.route('/login', methods=['GET', 'POST'])  # 用户登录
 def login():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
-        if not username or not password:
-            flash('Invalid username or password.')
-            return redirect(url_for('login'))
 
         user = User.query.filter(User.name == username)
-        if username == user.name and user.validate_password(password):
+        if user.validate_password(password):  # 验证
             login_user(user)
-            flash('Login success.')
             return redirect(url_for('index'))
 
-        flash('Invalid username or password.')
+        flash('您输入的用户名或密码无效。')
         return redirect((url_for('login')))
 
     return render_template('login.html')
 
 
-@app.route('/movie/edit/<int:movie_id>', methods=['GET', 'POST'])
-@login_required
-def edit(movie_id):
-    movie = Task.query.get_or_404(movie_id)
-
-    if request.method == 'POST':
-        title = request.form.get('title')
-        year = request.form.get('year')
-        if not title or not year or len(year) > 4 or len(title) > 60:
-            flash('Invalid input.')
-            return redirect(url_for('edit', movie_id=movie_id))
-        movie.content = title
-        movie.deadline = year
-        db.session.commit()
-        flash('Done.')
-        return redirect(url_for('index'))
-
-    return render_template('edit.html', movie=movie)
-
-
-@app.route('/movie/delete/<int:movie_id>', methods=['POST'])
-@login_required
-def delete(movie_id):
-    movie = Task.query.get_or_404(movie_id)
-    db.session.delete(movie)
-    db.session.commit()
-    flash('Done.')
-    return redirect(url_for('index'))
-
-'''
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-    if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
-        if not username or not password:
-            flash('Invalid input.')
-            return redirect(url_for('login'))
-
-        user = User.query.first()
-        if username == user.name and user.validate_password(password):
-            login_user(user)
-            flash('Login success.')
-            return redirect(url_for('index'))
-
-        flash('Invalid username or password.')
-        return redirect((url_for('login')))
-
-    return render_template('login.html')
-'''
-
-@app.route('/logout')
+@app.route('/logout')  # 用户注销
 @login_required
 def logout():
     logout_user()
-    flash('Goodbye.')
     return redirect(url_for('index'))
 
 
-@app.route('/settings', methods=['GET', 'POST'])
+@app.route('/signup')  # todo 继续
+def signup():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+
+        user = User.query.filter(User.name == username)
+        if user.validate_password(password):  # 验证
+            login_user(user)
+            return redirect(url_for('index'))
+
+    return render_template('signup.html')
+
+
+@app.route('/settings', methods=['GET', 'POST'])  # 修改用户信息
 @login_required
 def settings():
     if request.method == 'POST':
         name = request.form['name']
-        if not name or len(name) > 20:
-            flash('Invalid input.')
-            return redirect(url_for('settings'))
         current_user.name = name
+        password = request.form['password']
+        current_user.password_hash = current_user.set_password(password)
         db.session.commit()
-        flash('Done.')
         return redirect(url_for('index'))
 
     return render_template('settings.html', user=current_user)
@@ -199,7 +173,7 @@ def initdb(drop):
     db.create_all()
     click.echo('Initialized database.')  # 输出提示信息
 
-
+'''
 @app.cli.command()
 @click.option('--username', prompt=True, help='The username used to login.')
 @click.option('--password', prompt=True, hide_input=False, confirmation_prompt=True, help='The password used to login.')
@@ -220,8 +194,8 @@ def admin(username, password):
 
     db.session.commit()  # 提交数据库会话
     click.echo('Done.')
-
-
+'''
+'''
 # 虚拟数据
 @app.cli.command()
 def forge():
@@ -251,7 +225,7 @@ def forge():
 
     db.session.commit()
     click.echo('Done.')
-
+'''
 
 if __name__ == '__main__':
     app.run()
