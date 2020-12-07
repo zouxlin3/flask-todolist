@@ -4,7 +4,7 @@ import click
 from flask import Flask
 from flask import escape
 from flask import render_template
-from flask import request
+from flask import request, session
 from flask import redirect
 from flask import flash
 from flask import url_for
@@ -64,15 +64,19 @@ class Task(db.Model):
 '''
 @app.context_processor  # todo  上下文处理器  使所有自定义变量在模板中可见
 def inject_user():
+    if not current_user.is_authenticated:
+        return redirect(url_for('login'))
     user = User.query.get(current_user.id)
     return dict(user=user)
 '''
 
 @app.route('/', methods=['GET', 'POST'])  # 主页面
 def index():
-    if not current_user.is_authenticated:  # 判断用户是否登录
-        return redirect(url_for('login'))
-
+    '''
+    user = session.get('user')
+    if not user:
+        return redirect('/login')
+    '''
     if request.method == 'POST':
         content = request.form.get('content')
 
@@ -88,7 +92,7 @@ def index():
         return redirect(url_for('index'))
 
     tasks = Task.query.filter(Task.user == current_user.id)  # 读取用户待办
-    return render_template('index.html', tasks=tasks)  # todo  关联app.context_processor
+    return render_template('index.html', user=current_user, tasks=tasks)  # todo  关联app.context_processor
 
 
 @login_required
