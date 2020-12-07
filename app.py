@@ -139,16 +139,17 @@ def register():
         username = request.form['username']
         password = request.form['password']
 
-        if User.query.filter(User.name == username) is not None:
-            flash('该用户名已被注册。')
-            redirect(url_for('register'))
+        check_user = User.query.filter(User.name == username).first()
+        if check_user is not None:
+            flash('该用户名已被注册')
+            return redirect(url_for('register'))
 
         user = User(name=username)
         user.set_password(password)
         db.session.add(user)
         db.session.commit()
-        flash('成功注册新用户。')
-        redirect(url_for('index'))
+        flash('注册成功，请登录')
+        return redirect(url_for('login'))
 
     return render_template('register.html')
 

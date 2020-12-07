@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block title %}
-<title>登录-todo.NUTURE</title>
+<title>注册新用户-todo.NUTURE</title>
 <link rel="stylesheet" href="static/css/login.css" type="text/css">
 {% endblock %}
 
@@ -15,7 +15,7 @@
                 </div>
                 <div class="card fat">
                     <div class="card-body">
-                        <h4 class="card-title">登录</h4>
+                        <h4 class="card-title">注册</h4>
                         <form method="POST" class="my-login-validation" onsubmit="return check()">
                             <div class="form-group">
                                 <label for="username">用户名</label>
@@ -27,18 +27,32 @@
                                 <label for="password">密码</label><!--data-eye是自定义属性-->
                                 <input id="password" type="password" class="form-control" name="password" data-eye>
                                 <div class="invalid-feedback" id="password-feedback"></div>
+                            </div>
+                            <div class="form-group">
+                                <label for="confirmpassword">确认密码</label><!--data-eye是自定义属性-->
+                                <input id="confirmpassword" type="password" class="form-control" name="confirmpassword" data-eye>
+                                <div class="invalid-feedback" id="confirmpassword-feedback"></div>
                                 {% for message in get_flashed_messages() %}
                                     <div class="alert">{{ message }}</div>
                                 {% endfor %}
                             </div>
 
+                            <div class="form-group">
+									<div class="custom-checkbox custom-control">
+										<input type="checkbox" name="agree" id="agree" class="custom-control-input">
+										<label for="agree" class="custom-control-label">我同意<a href="#" onclick="needtoknow()">用户须知</a></label>
+									</div>
+                                    <div class="invalid-feedback" id="agree-feedback"></div>
+                                    <div>test</div>
+                            </div>
+
                             <div class="form-group m-0">
                                 <button type="submit" class="btn btn-primary btn-block">
-                                    登录
+                                    注册
                                 </button>
                             </div>
                             <div class="mt-4 text-center">
-                                还没有账户? <a href="{{ url_for('register') }}">马上加入</a>
+                                已有账户? <a href="{{ url_for('login') }}">马上登录</a>
                             </div>
                         </form>
                     </div>
@@ -50,5 +64,5 @@
         </div>
     </div>
 </section>
-<script src="static/js/login.js"></script>
+<script src="static/js/register.js"></script>
 {% endblock %}
