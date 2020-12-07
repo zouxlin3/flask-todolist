@@ -112,12 +112,15 @@ def login():
         username = request.form['username']
         password = request.form['password']
 
-        user = User.query.filter(User.name == username)
-        if user.validate_password(password):  # 验证
+        user = User.query.filter(User.name == username).first()  # 验证
+        if user is None:
+            flash('该用户不存在')
+            return redirect(url_for('login'))
+        if user.validate_password(password):
             login_user(user)
             return redirect(url_for('index'))
 
-        flash('您输入的用户名或密码无效。')
+        flash('密码错误')
         return redirect((url_for('login')))
 
     return render_template('login.html')
