@@ -79,12 +79,13 @@ def index():
     '''
     if request.method == 'POST':
         content = request.form.get('content')
+        func = request.form.get('func')
 
-        if request.form.get('submit') == '添加任务':  # 增加待办功能
+        if func == 'add':  # 增加待办功能
             task = Task(user=current_user.id, content=content, is_completed=False)
             db.session.add(task)
 
-        elif request.form.get('submit') == '保存':  # 修改待办功能
+        elif func == 'edit':  # 修改待办功能
             task = Task.query.get(request.form.get('task_id'))
             task.content = content
 
@@ -92,7 +93,7 @@ def index():
         return redirect(url_for('index'))
 
     tasks = Task.query.filter(Task.user == current_user.id)  # 读取用户待办
-    return render_template('index.html', user=current_user, tasks=tasks)  # todo  关联app.context_processor
+    return render_template('index.html', tasks=tasks)  # todo  关联app.context_processor
 
 
 @login_required
