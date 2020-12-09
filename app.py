@@ -98,7 +98,10 @@ def delete(task_id):  # 删除待办功能
 @login_required
 def complete(task_id):  # 完成待办功能
     task = Task.query.get(task_id)
-    task.is_completed = True
+    if task.is_completed:
+        task.is_completed = False
+    else:
+        task.is_completed = True
     db.session.commit()
     return redirect(url_for('index'))
 

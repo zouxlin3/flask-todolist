@@ -9,11 +9,6 @@
     <link rel="icon" href="{{ url_for('static', filename='images/favicon.svg') }}">
 </head>
 <body class="body">
-    <!--{% for message in get_flashed_messages() %}
-        <div class="invalid-feedback">{{ message }}</div>
-    {% endfor %}-->
-
-    <!--{% block head %}{% endblock %}-->
     {% block body %}{% endblock %}
     <script src="static/js/jquery.slim.min.js"></script>
     <script src="static/js/popper.min.js"></script>

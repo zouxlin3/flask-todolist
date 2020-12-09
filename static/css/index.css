@@ -1,10 +1,15 @@
 html,body {
-	height: 100%;
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
 }
 
 .body {
 	background: #f4f4f4;
-	font-size: 14px;
+  font-size: 14px;
+  margin: 0;
+  padding: 0;
 }
 
 .add {
@@ -94,8 +99,8 @@ html,body {
 }
 
 .container {
-  width: auto;
-  float: left;
+  width: 100%;
+  float: center;
   background-color: #f4f4f4;
   padding:0px 0px 10px 0px;
 }
@@ -104,7 +109,7 @@ html,body {
   width: 100%;
   float: left;
   list-style-type: none;
-  padding: 10px 0px 0px 15px;
+  padding: 10px 0px 0px 0px;
 }
 
 .todo li {
@@ -146,17 +151,6 @@ html,body {
   -webkit-appearance: none;
   -moz-appearance: none;
 }
-/*
-.todo li .buttons a:last-of-type:before {
-  content: '';
-  width: 1px;
-  height: 30px;
-  background: #edf0f1;
-
-  position: absolute;
-  top: 10px;
-  left: 0;
-}*/
 
 .todo li .buttons a svg {
   width: 22px;
@@ -201,6 +195,23 @@ html,body {
 }
 
 .todo li .buttons a.complete:hover svg rect {
+  fill: #007bff;
+  transition: fill 0.2s ease;
+}
+
+/*------*/
+.todo li .buttons a.cancel_complete svg {
+  border-radius: 11px;
+  border: 1.5px solid #007bff;
+  background: #007bff;
+}
+
+.todo li .buttons a.cancel_complete svg .fill {
+  fill: #fff;
+  border: 0px;
+}
+
+.todo li .buttons a.cancel_complete svg rect {
   fill: #007bff;
   transition: fill 0.2s ease;
 }
