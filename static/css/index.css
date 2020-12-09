@@ -133,7 +133,7 @@ html,body {
   right: 0;
 }
 
-.todo li .buttons button {
+.todo li .buttons a {
   width: 50px;
   height: 50px;
   float: left;
@@ -148,7 +148,7 @@ html,body {
   -moz-appearance: none;
 }
 
-.todo li .buttons button:last-of-type:before {
+.todo li .buttons a:last-of-type:before {
   content: '';
   width: 1px;
   height: 30px;
@@ -159,7 +159,7 @@ html,body {
   left: 0;
 }
 
-.todo li .buttons button svg {
+.todo li .buttons a svg {
   width: 22px;
   height: 22px;
 
@@ -169,36 +169,36 @@ html,body {
 
   margin: -11px 0 0 -11px;
 }
-.todo li .buttons button.remove svg {
+.todo li .buttons a.remove svg {
   background: #ffffff;
 }
-.todo li .buttons button svg .fill {
+.todo li .buttons a svg .fill {
   transition: fill 0.2s ease;
 }
 
-.todo li .buttons button.remove svg .fill {
+.todo li .buttons a.remove svg .fill {
   fill: #c0cecb;
 }
 
-.todo li .buttons button.remove:hover svg .fill {
+.todo li .buttons a.remove:hover svg .fill {
   fill: #e85656;
 }
 
-.todo li .buttons button.complete svg {
+.todo li .buttons a.complete svg {
   border-radius: 11px;
   border: 1.5px solid #007bff;
 
   transition: background 0.2s ease;
 }
 
-.todo li .buttons button.complete:hover svg {
+.todo li .buttons a.complete:hover svg {
   background: #007bff;
 }
 
-.todo li .buttons button.complete:hover svg .fill {
+.todo li .buttons a.complete:hover svg .fill {
   fill: #fff;
 }
 
-.todo li .buttons button.complete svg .fill {
+.todo li .buttons a.complete svg .fill {
   fill: #007bff;
 }

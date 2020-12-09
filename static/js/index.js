@@ -16,5 +16,5 @@ function add() {
 
     document.body.appendChild(post);
 
-    post.submit()
+    post.submit();
 }

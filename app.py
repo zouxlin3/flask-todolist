@@ -96,19 +96,22 @@ def index():
     return render_template('index.html', tasks=tasks)  # todo  关联app.context_processor
 
 
+@app.route('/delete/<int:task_id>', methods=['GET'])
 @login_required
 def delete(task_id):  # 删除待办功能
+    print(task_id)  # debugger
     db.session.delete(Task.query.get(task_id))
     db.session.commit()
-    return url_for('index')
+    return redirect(url_for('index'))
 
 
+@app.route('/complete/<int:task_id>', methods=['GET'])
 @login_required
 def complete(task_id):  # 完成待办功能
     task = Task.query.get(task_id)
     task.is_completed = True
     db.session.commit()
-    return url_for('index')
+    return redirect(url_for('index'))
 
 
 @app.route('/login', methods=['GET', 'POST'])  # 用户登录
