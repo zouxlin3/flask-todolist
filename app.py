@@ -61,22 +61,9 @@ class Task(db.Model):
     content = db.Column(db.String(60))
     is_completed = db.Column(db.Boolean)
 
-'''
-@app.context_processor  # todo  上下文处理器  使所有自定义变量在模板中可见
-def inject_user():
-    if not current_user.is_authenticated:
-        return redirect(url_for('login'))
-    user = User.query.get(current_user.id)
-    return dict(user=user)
-'''
 
 @app.route('/', methods=['GET', 'POST'])  # 主页面
 def index():
-    '''
-    user = session.get('user')
-    if not user:
-        return redirect('/login')
-    '''
     if request.method == 'POST':
         content = request.form.get('content')
         func = request.form.get('func')
@@ -92,8 +79,10 @@ def index():
         db.session.commit()
         return redirect(url_for('index'))
 
+    if not current_user.is_authenticated:
+        return redirect(url_for('login'))
     tasks = Task.query.filter(Task.user == current_user.id)  # 读取用户待办
-    return render_template('index.html', tasks=tasks)  # todo  关联app.context_processor
+    return render_template('index.html', tasks=tasks)
 
 
 @app.route('/delete/<int:task_id>', methods=['GET'])
