@@ -1,22 +1,8 @@
-import os
-import platform
-import click
-from flask import Flask
-from flask import escape
-from flask import render_template
-from flask import request, session
-from flask import redirect
-from flask import flash
-from flask import url_for
+import os, platform, click
+from flask import Flask, render_template, request, redirect, flash, url_for
 from flask_sqlalchemy import SQLAlchemy
-from werkzeug.security import generate_password_hash
-from werkzeug.security import check_password_hash
-from flask_login import LoginManager
-from flask_login import UserMixin
-from flask_login import login_user
-from flask_login import login_required
-from flask_login import logout_user
-from flask_login import current_user
+from werkzeug.security import generate_password_hash, check_password_hash
+from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 
 
 app = Flask(__name__)
@@ -79,7 +65,7 @@ def index():
         db.session.commit()
         return redirect(url_for('index'))
 
-    if not current_user.is_authenticated:
+    if not current_user.is_authenticated:  # 没有登录时跳转登录页面
         return redirect(url_for('login'))
     tasks = Task.query.filter(Task.user == current_user.id)  # 读取用户待办
     return render_template('index.html', tasks=tasks, user=current_user)
@@ -88,7 +74,6 @@ def index():
 @app.route('/delete/<int:task_id>', methods=['GET'])
 @login_required
 def delete(task_id):  # 删除待办功能
-    print(task_id)  # debugger
     db.session.delete(Task.query.get(task_id))
     db.session.commit()
     return redirect(url_for('index'))
@@ -98,7 +83,7 @@ def delete(task_id):  # 删除待办功能
 @login_required
 def complete(task_id):  # 完成待办功能
     task = Task.query.get(task_id)
-    if task.is_completed:
+    if task.is_completed:  # 取消完成
         task.is_completed = False
     else:
         task.is_completed = True
@@ -171,7 +156,7 @@ def setting_name():
     return render_template('setting_name.html', user=current_user)
 
 
-@app.route('/setting_password', methods=['GET', 'POST'])  # 修改用户名
+@app.route('/setting_password', methods=['GET', 'POST'])  # 修改密码
 @login_required
 def setting_password():
     if request.method == 'POST':

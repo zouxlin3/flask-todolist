@@ -3,7 +3,8 @@ function check() {
     var username_feedback = document.getElementById("username-feedback");
     var password = document.getElementById("password");
     var password_feedback = document.getElementById("password-feedback");
-
+    
+    //先清楚所有非法状态
     username.classList.remove("is-invalid");
     username_feedback.innerHTML="";
     password.classList.remove("is-invalid");

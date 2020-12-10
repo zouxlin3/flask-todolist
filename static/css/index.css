@@ -162,7 +162,7 @@ html,body {
 
   margin: -11px 0 0 -11px;
 }
-.todo li .buttons a svg .fill {
+.todo li .buttons a svg .fill {/*svg有里外两个图案 .fill是里面的*/
   transition: fill 0.2s ease;
 }
 
