@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block title %}
+<title>设置-todo.NUTURE</title>
+<link rel="stylesheet" href="static/css/login.css" type="text/css">
+{% endblock %}
+
+{% block body %}
+<section class="h-100">
+    <div class="container h-100">
+        <div class="row justify-content-md-center h-100">
+            <div class="card-wrapper">
+                <div class="brand"><!--logo-->
+                    <img src="static/images/favicon.svg" alt="logo">
+                </div>
+                <div class="card fat">
+                    <div class="card-body">
+                        <h4 class="card-title">设置</h4>
+                        <form method="POST" class="my-login-validation" onsubmit="return check()">
+                            <div class="form-group">
+                                <label for="username">你的新用户名</label>
+                                <!--class:对应的css name:输入内容的name autofocus:加载页面时自动开启输入光标-->
+                                <input id="username" type="text" class="form-control" name="username" value="{{ user['name'] }}" autofocus>
+                                <div class="invalid-feedback" id="username-feedback"></div>
+                                {% for message in get_flashed_messages() %}
+                                    <div class="alert">{{ message }}</div>
+                                {% endfor %}
+                            </div>
+
+                            <div class="form-group m-0">
+                                <button type="submit" class="btn btn-primary btn-block">
+                                    更改
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="footer">
+                    Copyright &copy; 2020 &mdash; todo.NUTURE
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script src="static/js/setting_name.js"></script>
+{% endblock %}

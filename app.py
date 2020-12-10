@@ -154,18 +154,34 @@ def register():
     return render_template('register.html')
 
 
-@app.route('/settings', methods=['GET', 'POST'])  # 修改用户信息
+@app.route('/setting_name', methods=['GET', 'POST'])  # 修改用户名
 @login_required
-def settings():
+def setting_name():
     if request.method == 'POST':
-        name = request.form['name']
+        name = request.form['username']
+        check_user = User.query.filter(User.name == name).first()
+        if check_user is not None:
+            flash('该用户名已被注册')
+            return redirect(url_for('setting_name'))
+
         current_user.name = name
-        password = request.form['password']
-        current_user.set_password(password)
         db.session.commit()
         return redirect(url_for('index'))
 
-    return render_template('settings.html', user=current_user)
+    return render_template('setting_name.html', user=current_user)
+
+
+@app.route('/setting_password', methods=['GET', 'POST'])  # 修改用户名
+@login_required
+def setting_password():
+    if request.method == 'POST':
+        password = request.form['password']
+        current_user.set_password(password)
+        db.session.commit()
+        logout_user()
+        return redirect(url_for('index'))
+
+    return render_template('setting_password.html', user=current_user)
 
 
 @app.errorhandler(404)
