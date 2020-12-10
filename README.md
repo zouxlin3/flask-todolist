@@ -32,4 +32,4 @@ flask run
 - [themaxsandelin/todo](https://github.com/themaxsandelin/todo)
 - [nauvalazhar/bootstrap-4-login-page](https://github.com/nauvalazhar/bootstrap-4-login-page)
 # 许可证
-[MIT](LICENSE.md) © zouxlin3
+[MIT](license.md) © zouxlin3
