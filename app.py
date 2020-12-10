@@ -82,7 +82,7 @@ def index():
     if not current_user.is_authenticated:
         return redirect(url_for('login'))
     tasks = Task.query.filter(Task.user == current_user.id)  # 读取用户待办
-    return render_template('index.html', tasks=tasks)
+    return render_template('index.html', tasks=tasks, user=current_user)
 
 
 @app.route('/delete/<int:task_id>', methods=['GET'])
