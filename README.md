@@ -12,16 +12,28 @@
 - 退出登录
 ### Demo:
 # 安装
-### Using docker
+### 方法一：Using docker
+创建一个目录用于存放db文件
 ```bash
+# 拉取镜像并创建容器
 sudo docker pull zouxlin3/todo
-sudo docker run --name todo -d -p 5000:5000 zouxlin3/todo
+sudo docker run --name todo -d -p 5000:5000 -v /你创建的目录:/todo/data zouxlin3/todo
 ```
-### Manually
 ```bash
+# 进入容器，初始化数据库
+sudo docker exec -it b84237cb5b20 bash
+flask initdb --drop
+```
+### 方法二：Manually
+```bash
+# 下载所有文件并安装运行环境
 git clone https://github.com/zouxlin3/flask-todolist.git
 pip install -i https://pypi.tuna.tsinghua.edu.cn/simple -r requirements.txt
+```
+```bashe
+# 初始化数据库并运行
 flask run
+flask initdb --drop 
 ```
 # 开发计划
 - 添加任务deadline
