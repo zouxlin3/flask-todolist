@@ -21,7 +21,7 @@ sudo docker run --name todo -d -p 5000:5000 -v /你创建的目录:/todo/data zo
 ```
 ```bash
 # 进入容器，初始化数据库
-sudo docker exec -it b84237cb5b20 bash
+sudo docker exec -it todo bash
 flask initdb --drop
 ```
 ### 方法二：Manually
