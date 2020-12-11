@@ -13,12 +13,12 @@
 ### Demo:
 # 安装
 ### 方法一：Using docker
-创建一个目录用于存放db文件
 ```bash
 # 拉取镜像并创建容器
 sudo docker pull zouxlin3/todo
-sudo docker run --name todo -d -p 5000:5000 -v /你创建的目录:/todo/data zouxlin3/todo
+sudo docker run --name todo -d -p 5000:5000 -v /root/.todo:/todo/data zouxlin3/todo
 ```
+映射目录`/root/.todo`可更换
 ```bash
 # 进入容器，初始化数据库
 sudo docker exec -it todo bash
