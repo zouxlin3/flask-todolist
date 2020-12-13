@@ -1,5 +1,5 @@
 # flask-todolist
-> A TODO list application developed with Flask, bootstrap4 and  SQLAlchemy.
+> 使用Flask, bootstrap4 和 SQLAlchemy 开发的todo webapp
 # 简介
 ### 功能
 - 用户登录
