@@ -35,10 +35,7 @@ pip install -i https://pypi.tuna.tsinghua.edu.cn/simple -r requirements.txt
 flask run
 flask initdb --drop 
 ```
-# 开发计划
-- 添加任务deadline
-- 搜索功能
-- 待办任务分类
+
 # 参考项目
 - [greyli/watchlist](https://github.com/greyli/watchlist)
 - [themaxsandelin/todo](https://github.com/themaxsandelin/todo)
