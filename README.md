@@ -10,7 +10,7 @@
 - 修改密码
 - 修改用户名
 - 退出登录
-### Demo: https://todo.nuture.group
+### Demo: http://81.68.76.27:5001/login
 # 安装
 ### 方法一：Using docker
 ```bash
